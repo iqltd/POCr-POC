@@ -1,6 +1,6 @@
 POCr-POC
 ========
-A proof of concept for POCr, a web application that will be able to generate simple java enterprise applications, compile them, and deploy them, and generate documentation for them, based on the choices made in the UI.
+A proof of concept for POCr, a web application which will be able to generate simple java enterprise applications, compile them, deploy them, and generate documentation for them, based on the choices made in the UI.
 
 At this moment the following functionalities are explored:
 - generating JSF 2 managed bean (using the CodeModel library)
