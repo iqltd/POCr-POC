@@ -6,11 +6,9 @@ import java.io.IOException;
 import org.codehaus.plexus.util.FileUtils;
 
 import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JDefinedClass;
 import com.test.pocr.util.Util;
 
-public class ManagedBeanGenerator {
+public class TestManagedBeanGenerator {
 
 	private static final String FILE_PATH = Util.ROOT_PATH + "/WEB-INF/classes";
 
@@ -27,21 +25,20 @@ public class ManagedBeanGenerator {
 
 	}
 
-	public static void generateManagedBean()
-			throws JClassAlreadyExistsException, IOException {
-		final JCodeModel cm = new JCodeModel();
-		final JDefinedClass bean = cm._class("com.test.pocr.TestBean");
+	public static void generateManagedBean() throws IOException,
+			JClassAlreadyExistsException {
 
-		final ManagedBeanModel model = new ManagedBeanModel(bean);
+		final ManagedBeanBuilder builder = new ManagedBeanBuilder(
+				"com.test.pocr.TestBean");
 
-		model.addProperty("camp1", String.class);
-		model.addProperty("camp2", int.class);
+		builder.addProperty("camp1", String.class);
+		builder.addProperty("camp2", int.class);
 
 		final File file = new File(FILE_PATH);
 		if (file.exists()) {
 			FileUtils.deleteDirectory(file);
 		}
 		file.mkdirs();
-		cm.build(file);
+		builder.writeToFile(file);
 	}
 }
