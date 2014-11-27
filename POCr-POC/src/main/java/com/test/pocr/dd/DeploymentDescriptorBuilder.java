@@ -32,6 +32,7 @@ public class DeploymentDescriptorBuilder {
 	public DeploymentDescriptorBuilder(final String id) {
 		web = new WebAppType();
 		web.setId(id);
+		web.setVersion("2.5");
 		factory = new ObjectFactory();
 		servlets = new HashSet<String>();
 	}
@@ -71,6 +72,11 @@ public class DeploymentDescriptorBuilder {
 
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 					Boolean.TRUE);
+			jaxbMarshaller
+					.setProperty(
+							Marshaller.JAXB_SCHEMA_LOCATION,
+							"http://java.sun.com/xml/ns/javaee "
+							+ "http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd");
 		}
 	}
 
