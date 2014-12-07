@@ -12,9 +12,6 @@ public class PageYielder extends AbstractYielder {
 			+ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "
 			+ "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"> ";
 
-	private static final String ATTRIBUTES = "xmlns=\"http://www.w3.org/1999/xhtml\" %s";
-	private static final String NAMESPACE_ATTR = "xmlns:%s=\"%s\" ";
-
 	public NamespaceEnum getNamespace() {
 		return NAMESPACE;
 	}
@@ -22,19 +19,10 @@ public class PageYielder extends AbstractYielder {
 	@Override
 	public String yield() {
 		final StringBuffer page = new StringBuffer(2000);
-		page.append(String.format(BOILERPLATE, getNamespaceDeclarations()));
+		page.append(String.format(BOILERPLATE, getAttributes()));
 		page.append(super.yield());
 
 		return page.toString();
-	}
-
-	private String getNamespaceDeclarations() {
-		final StringBuffer nsDeclarations = new StringBuffer();
-		for (final NamespaceEnum namespace : getNamespaces()) {
-			nsDeclarations.append(String.format(NAMESPACE_ATTR,
-					namespace.getPrefix(), namespace.getUri()));
-		}
-		return nsDeclarations.toString();
 	}
 
 	@Override
@@ -44,7 +32,10 @@ public class PageYielder extends AbstractYielder {
 
 	@Override
 	protected String getAttributes() {
-		return String.format(ATTRIBUTES, getNamespaceDeclarations());
+		final StringBuffer nsDeclarations = new StringBuffer();
+		for (final NamespaceEnum namespace : getNamespaces()) {
+			nsDeclarations.append(namespace.getUri());
+		}
+		return nsDeclarations.toString();
 	}
-
 }

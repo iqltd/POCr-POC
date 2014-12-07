@@ -7,7 +7,10 @@ import com.test.pocr.facelet.model.PageModel;
 public class TestXhtmlGenerator {
 
 	public static void main(final String[] args) {
-		// TODO Auto-generated method stub
+		generatePage();
+	}
+
+	public static void generatePage() {
 		final PageModel page = new PageModel();
 		final ButtonModel button1 = new ButtonModel();
 		button1.setLabel("test");
@@ -22,11 +25,6 @@ public class TestXhtmlGenerator {
 
 		final FacesPageGenerator generator = new FacesPageGenerator(page);
 		System.out.println(generator.generate());
-
-	}
-
-	public static void generatePage() {
-
 	}
 
 }
