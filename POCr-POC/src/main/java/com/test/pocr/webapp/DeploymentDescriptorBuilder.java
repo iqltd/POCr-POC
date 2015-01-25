@@ -1,4 +1,4 @@
-package com.test.pocr.dd;
+package com.test.pocr.webapp;
 
 import java.io.File;
 import java.util.HashSet;
@@ -19,9 +19,13 @@ import org.jcp.xmlns.xml.ns.javaee.ServletType;
 import org.jcp.xmlns.xml.ns.javaee.UrlPatternType;
 import org.jcp.xmlns.xml.ns.javaee.WebAppType;
 
+import com.test.pocr.application.Writable;
+import com.test.pocr.exception.PocrException;
 import com.test.pocr.util.Util;
 
-public class DeploymentDescriptorBuilder {
+public class DeploymentDescriptorBuilder implements Writable {
+
+	private static final String WEB_APP_VERSION = "2.5";
 
 	private final WebAppType web;
 	private final ObjectFactory factory;
@@ -32,7 +36,7 @@ public class DeploymentDescriptorBuilder {
 	public DeploymentDescriptorBuilder(final String id) {
 		web = new WebAppType();
 		web.setId(id);
-		web.setVersion("2.5");
+		web.setVersion(WEB_APP_VERSION);
 		factory = new ObjectFactory();
 		servlets = new HashSet<String>();
 	}
@@ -58,9 +62,14 @@ public class DeploymentDescriptorBuilder {
 		servlets.add(servletName);
 	}
 
-	public void writeToFile(final File out) throws JAXBException {
-		setMarshaller();
-		jaxbMarshaller.marshal(web, out);
+	public void writeToFile(final File out) {
+		try {
+			setMarshaller();
+			jaxbMarshaller.marshal(web, out);
+		} catch (final JAXBException e) {
+			throw new PocrException(
+					"Failure while marshalling the deployment descriptor.", e);
+		}
 	}
 
 	private void setMarshaller() throws JAXBException, PropertyException {

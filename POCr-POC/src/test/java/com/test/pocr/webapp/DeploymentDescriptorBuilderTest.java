@@ -1,10 +1,12 @@
-package com.test.pocr.dd;
+package com.test.pocr.webapp;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.test.pocr.webapp.DeploymentDescriptorBuilder;
 
 public class DeploymentDescriptorBuilderTest {
 

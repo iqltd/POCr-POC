@@ -4,15 +4,13 @@ import com.sun.codemodel.JJavaName;
 
 public class Util {
 
-	public static final String ROOT_PATH = "./target/generated";
-
 	public static final String POINT = ".";
 
 	private static final String BLANK = "";
 
 	// Not to be instantiated
 	private Util() {
-		throw new UnsupportedOperationException();
+		throw new AssertionError();
 	}
 
 	/**

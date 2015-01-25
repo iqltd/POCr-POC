@@ -2,8 +2,8 @@ package com.test.pocr.facelet.xhtml;
 
 public enum NamespaceEnum {
 	NO_NAMESPACE("", "xmlns=\"http://www.w3.org/1999/xhtml\" "),
-	HTML("h", "xmlsn:h=\"http://java.sun.com/jsf/html\" "),
-	FACES("f", "xmlsn:f=\"http://java.sun.com/jsf/core\" ");
+	HTML("h", "xmlns:h=\"http://java.sun.com/jsf/html\" "),
+	FACES("f", "xmlns:f=\"http://java.sun.com/jsf/core\" ");
 
 	private static final String SEPARATOR = ":";
 	private final String prefix;

@@ -1,16 +1,16 @@
 package com.test.pocr.facelet;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.test.pocr.facelet.model.ButtonModel;
 import com.test.pocr.facelet.model.InputFieldModel;
 import com.test.pocr.facelet.model.PageModel;
 
-public class TestXhtmlGenerator {
+public class FacesPageGeneratorTest {
 
-	public static void main(final String[] args) {
-		generatePage();
-	}
-
-	public static void generatePage() {
+	@Test
+	public void nominal() {
 		final PageModel page = new PageModel();
 		final ButtonModel button1 = new ButtonModel();
 		button1.setLabel("test");
@@ -24,7 +24,12 @@ public class TestXhtmlGenerator {
 		page.addComponent(field1);
 
 		final FacesPageGenerator generator = new FacesPageGenerator(page);
-		System.out.println(generator.generate());
-	}
 
+		final String expectedField = "<h:inputText required=\"false\" label=\"field1\"value=\"#{user.name}\" ></h:inputText>";
+		final String expectedButton = "<h:commandButton value=\"test\" action=\"null\" ></h:commandButton>";
+
+		final String generatedPage = generator.generate();
+		Assert.assertTrue(generatedPage.contains(expectedButton));
+		Assert.assertTrue(generatedPage.contains(expectedField));
+	}
 }
