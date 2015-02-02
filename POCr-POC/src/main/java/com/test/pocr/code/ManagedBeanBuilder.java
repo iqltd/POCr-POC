@@ -1,32 +1,45 @@
 package com.test.pocr.code;
 
-import java.io.File;
-import java.io.IOException;
-
 import javax.annotation.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.sun.codemodel.JClassAlreadyExistsException;
-import com.test.pocr.application.Writable;
+import com.sun.codemodel.JJavaName;
+import com.test.pocr.application.IGenerator;
+import com.test.pocr.exception.PocrException;
 
-public class ManagedBeanBuilder implements Writable {
+public class ManagedBeanBuilder {
 
-	private static final String ROOT_PACKAGE = "com.test.pocr.";
-	private static final String PACKAGE_SEPARATOR = ".";
+	private static final String MANAGED_BEAN_NAME = "name";
+	private static final char PACKAGE_SEPARATOR = '.';
 
 	private final BeanModel model;
 
-	public ManagedBeanBuilder(final String className)
-			throws JClassAlreadyExistsException {
-
-		model = new BeanModel(ROOT_PACKAGE + className.toLowerCase()
-				+ PACKAGE_SEPARATOR + className);
-		model.addAnnotation(ManagedBean.class);
-		model.addAnnotation(SessionScoped.class);
+	/**
+	 *
+	 * @param packageName
+	 *            the package name
+	 * @param className
+	 *            the unqualified managed bean name
+	 * @throws PocrException
+	 *             on class creation errors
+	 */
+	public ManagedBeanBuilder(final String packageName, final String className) {
+		try {
+			model = new BeanModel(getQualifiedName(packageName, className));
+			model.addAnnotation(ManagedBean.class).param(MANAGED_BEAN_NAME,
+					className.toLowerCase());
+			model.addAnnotation(SessionScoped.class);
+		} catch (final JClassAlreadyExistsException e) {
+			throw new PocrException(
+					"An error occured at managed bean creation", e);
+		}
 	}
 
-	public BeanModel getModel() {
-		return model;
+	private String getQualifiedName(final String packageName,
+			final String className) {
+		// TODO verify arguments
+		return packageName + PACKAGE_SEPARATOR + className;
 	}
 
 	/**
@@ -35,12 +48,33 @@ public class ManagedBeanBuilder implements Writable {
 	 * @param type
 	 */
 	public void addProperty(final String name, final Class<?> type) {
-		model.addProperty(name, type);
+		validatePropertyName(name);
+		model.addField(name, type);
+		model.addSetter(name, type);
+		model.addGetter(name, type);
 	}
 
-	public void writeToFile(final File file) throws IOException {
-		file.mkdirs();
-		model.getCodeModel().build(file);
+	private void validatePropertyName(final String name) {
+		if (!JJavaName.isJavaIdentifier(name)) {
+			throw new IllegalArgumentException(
+					"The property name is not a java identifier.");
+		}
+		if (model.getListOfFields().contains(name)) {
+			throw new IllegalArgumentException(
+					"The property is already defined.");
+		}
+	}
+
+	/**
+	 *
+	 * @return a new managed bean generator object
+	 */
+	public IGenerator getGenerator() {
+		return new ManagedBeanGenerator(model);
+	}
+
+	protected BeanModel getModel() {
+		return model;
 	}
 
 }

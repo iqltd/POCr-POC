@@ -14,32 +14,32 @@ public class ApplicationModel implements Serializable {
 	private static final long serialVersionUID = 9173277311569679954L;
 
 	public ApplicationModel(final String name) {
-		beans = new HashMap<String, Writable>();
-		configurationFiles = new HashMap<String, Writable>();
+		beans = new HashMap<String, IGenerator>();
+		configurationFiles = new HashMap<String, IGenerator>();
 		this.name = name;
 	}
 
 	private final String name;
 
-	private final Map<String, Writable> beans;
+	private final Map<String, IGenerator> beans;
 
-	private final Map<String, Writable> configurationFiles;
+	private final Map<String, IGenerator> configurationFiles;
 
 	private PomBuilder pomBuilder;
 
-	public void addBean(final String path, final Writable bean) {
+	public void addBean(final String path, final IGenerator bean) {
 		beans.put(path, bean);
 	}
 
-	public Map<String, Writable> getBeans() {
+	public Map<String, IGenerator> getBeans() {
 		return beans;
 	}
 
-	public Map<String, Writable> getConfigurationFiles() {
+	public Map<String, IGenerator> getConfigurationFiles() {
 		return configurationFiles;
 	}
 
-	public void addConfigurationFile(final String path, final Writable confFile) {
+	public void addConfigurationFile(final String path, final IGenerator confFile) {
 		configurationFiles.put(path, confFile);
 	}
 

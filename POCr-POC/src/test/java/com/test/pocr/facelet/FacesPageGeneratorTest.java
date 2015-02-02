@@ -10,7 +10,7 @@ import com.test.pocr.facelet.model.PageModel;
 public class FacesPageGeneratorTest {
 
 	@Test
-	public void nominal() {
+	public void nominalCase() {
 		final PageModel page = new PageModel();
 		final ButtonModel button1 = new ButtonModel();
 		button1.setLabel("test");
@@ -19,8 +19,6 @@ public class FacesPageGeneratorTest {
 		final InputFieldModel field1 = new InputFieldModel();
 		field1.setLabel("field1");
 		field1.setRequired(false);
-
-		page.addButton(button1);
 		page.addComponent(field1);
 
 		final FacesPageGenerator generator = new FacesPageGenerator(page);

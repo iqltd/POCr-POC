@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import com.test.pocr.application.Writable;
+import com.test.pocr.application.IGenerator;
 import com.test.pocr.facelet.model.ButtonModel;
 import com.test.pocr.facelet.model.InputFieldModel;
 import com.test.pocr.facelet.model.PageModel;
@@ -17,7 +17,7 @@ import com.test.pocr.facelet.xhtml.InputTextYielder;
 import com.test.pocr.facelet.xhtml.PageYielder;
 import com.test.pocr.facelet.xhtml.Yielder;
 
-public class FacesPageBuilder implements Writable {
+public class FacesPageBuilder implements IGenerator {
 
 	private final PageModel model;
 

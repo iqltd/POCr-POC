@@ -61,14 +61,14 @@ public class ApplicationGenerator {
 		new MavenXpp3Writer().write(w, pom);
 	}
 
-	private void writeArtifacts(final Map<String, Writable> artifacts)
+	private void writeArtifacts(final Map<String, IGenerator> artifacts)
 			throws IOException {
-		for (final Entry<String, Writable> entry : artifacts.entrySet()) {
+		for (final Entry<String, IGenerator> entry : artifacts.entrySet()) {
 			String path = entry.getKey();
 			if (!path.startsWith(PATH_SEPARATOR)) {
 				path = PATH_SEPARATOR + path;
 			}
-			final Writable artifact = entry.getValue();
+			final IGenerator artifact = entry.getValue();
 			artifact.writeToFile(new File(PATH_PREFIX + outputFolder + path));
 		}
 	}

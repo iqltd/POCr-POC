@@ -19,11 +19,11 @@ import org.jcp.xmlns.xml.ns.javaee.ServletType;
 import org.jcp.xmlns.xml.ns.javaee.UrlPatternType;
 import org.jcp.xmlns.xml.ns.javaee.WebAppType;
 
-import com.test.pocr.application.Writable;
+import com.test.pocr.application.IGenerator;
 import com.test.pocr.exception.PocrException;
 import com.test.pocr.util.Util;
 
-public class DeploymentDescriptorBuilder implements Writable {
+public class DeploymentDescriptorBuilder implements IGenerator {
 
 	private static final String WEB_APP_VERSION = "2.5";
 

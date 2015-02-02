@@ -1,17 +1,24 @@
 package com.test.pocr.code;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.sun.codemodel.JClassAlreadyExistsException;
 
 public class ManagedBeanGeneratorTest {
 
-	private static String CLASS_NAME = "com.test.pocr.TestBean";
+	private static String PACKAGE_NAME = "TestBean";
+	private static String CLASS_NAME = "TestBean";
+
+	private ManagedBeanBuilder builder;
+
+	@Before
+	public void init() {
+		builder = new ManagedBeanBuilder(PACKAGE_NAME, CLASS_NAME);
+	}
 
 	public void addOkProperty() throws JClassAlreadyExistsException {
-
-		final ManagedBeanBuilder builder = new ManagedBeanBuilder(CLASS_NAME);
 
 		final String fieldName = "camp1";
 		builder.addProperty(fieldName, int.class);
@@ -26,27 +33,21 @@ public class ManagedBeanGeneratorTest {
 	@Test(expected = NullPointerException.class)
 	public void addNullProperty() throws JClassAlreadyExistsException {
 
-		final ManagedBeanBuilder model = new ManagedBeanBuilder(CLASS_NAME);
-
-		model.addProperty(null, String.class);
+		builder.addProperty(null, String.class);
 
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void addEmptyNameProperty() throws JClassAlreadyExistsException {
 
-		final ManagedBeanBuilder model = new ManagedBeanBuilder(CLASS_NAME);
-
-		model.addProperty("", String.class);
+		builder.addProperty("", String.class);
 
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void addIllegalProperty() throws JClassAlreadyExistsException {
 
-		final ManagedBeanBuilder model = new ManagedBeanBuilder(CLASS_NAME);
-
-		model.addProperty("goto", String.class);
+		builder.addProperty("goto", String.class);
 
 	}
 

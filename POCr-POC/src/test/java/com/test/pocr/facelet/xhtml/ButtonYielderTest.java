@@ -8,7 +8,7 @@ import com.test.pocr.facelet.model.ButtonModel;
 public class ButtonYielderTest {
 
 	@Test
-	public void testNormal() {
+	public void nominalCase() {
 		final ButtonModel model = new ButtonModel();
 		model.setAction("action");
 		model.setLabel("label");

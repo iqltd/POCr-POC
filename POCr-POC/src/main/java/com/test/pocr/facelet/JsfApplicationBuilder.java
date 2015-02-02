@@ -1,10 +1,8 @@
 package com.test.pocr.facelet;
 
-import com.sun.codemodel.JClassAlreadyExistsException;
 import com.test.pocr.code.ManagedBeanBuilder;
 import com.test.pocr.dto.FieldDto;
 import com.test.pocr.dto.FormDto;
-import com.test.pocr.exception.PocrException;
 import com.test.pocr.facelet.model.ButtonModel;
 import com.test.pocr.facelet.model.InputFieldModel;
 import com.test.pocr.mvn.JsfDecorator;
@@ -47,20 +45,13 @@ public class JsfApplicationBuilder extends WebApplicationBuilder {
 	}
 
 	private void addManagedBean(final FormDto form) {
-		try {
-			final ManagedBeanBuilder managedBeanBuilder = new ManagedBeanBuilder(
-					form.getFormName());
-			for (final FieldDto field : form.getFields()) {
-				managedBeanBuilder
-						.addProperty(field.getName(), field.getType());
-			}
-
-			addBean(CLASSES_PATH, managedBeanBuilder);
-
-		} catch (final JClassAlreadyExistsException e) {
-			throw new PocrException("Error occured at managed bean creation "
-					+ form.getFormName(), e);
+		final ManagedBeanBuilder builder = new ManagedBeanBuilder(
+				getNamespace(), form.getFormName());
+		for (final FieldDto field : form.getFields()) {
+			builder.addProperty(field.getName(), field.getType());
 		}
+
+		addBean(CLASSES_PATH, builder.getGenerator());
 
 	}
 
