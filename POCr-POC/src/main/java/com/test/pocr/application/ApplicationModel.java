@@ -39,7 +39,8 @@ public class ApplicationModel implements Serializable {
 		return configurationFiles;
 	}
 
-	public void addConfigurationFile(final String path, final IGenerator confFile) {
+	public void addConfigurationFile(final String path,
+			final IGenerator confFile) {
 		configurationFiles.put(path, confFile);
 	}
 

@@ -1,15 +1,10 @@
 package com.test.pocr.webapp;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 
 import org.jcp.xmlns.xml.ns.javaee.FullyQualifiedClassType;
 import org.jcp.xmlns.xml.ns.javaee.ObjectFactory;
@@ -20,25 +15,26 @@ import org.jcp.xmlns.xml.ns.javaee.UrlPatternType;
 import org.jcp.xmlns.xml.ns.javaee.WebAppType;
 
 import com.test.pocr.application.IGenerator;
-import com.test.pocr.exception.PocrException;
 import com.test.pocr.util.Util;
 
-public class DeploymentDescriptorBuilder implements IGenerator {
+public class DeploymentDescriptorBuilder {
 
 	private static final String WEB_APP_VERSION = "2.5";
 
-	private final WebAppType web;
+	private final WebAppType model;
 	private final ObjectFactory factory;
 	private final Set<String> servlets;
 
-	private Marshaller jaxbMarshaller;
-
 	public DeploymentDescriptorBuilder(final String id) {
-		web = new WebAppType();
-		web.setId(id);
-		web.setVersion(WEB_APP_VERSION);
+		model = new WebAppType();
+		model.setId(id);
+		model.setVersion(WEB_APP_VERSION);
 		factory = new ObjectFactory();
 		servlets = new HashSet<String>();
+	}
+
+	public IGenerator getGenerator() {
+		return new DeploymentDescriptorGenerator(model);
 	}
 
 	public void addServlet(final String qualifiedClassName,
@@ -60,33 +56,6 @@ public class DeploymentDescriptorBuilder implements IGenerator {
 					factory.createWebAppTypeServletMapping(servletMapping));
 		}
 		servlets.add(servletName);
-	}
-
-	public void writeToFile(final File out) {
-		try {
-			setMarshaller();
-			jaxbMarshaller.marshal(web, out);
-		} catch (final JAXBException e) {
-			throw new PocrException(
-					"Failure while marshalling the deployment descriptor.", e);
-		}
-	}
-
-	private void setMarshaller() throws JAXBException, PropertyException {
-		if (jaxbMarshaller == null) {
-			// create JAXB context and initializing Marshaller
-			final JAXBContext jaxbContext = JAXBContext
-					.newInstance(WebAppType.class);
-			jaxbMarshaller = jaxbContext.createMarshaller();
-
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-					Boolean.TRUE);
-			jaxbMarshaller
-					.setProperty(
-							Marshaller.JAXB_SCHEMA_LOCATION,
-							"http://java.sun.com/xml/ns/javaee "
-							+ "http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd");
-		}
 	}
 
 	private String getServletName(final String className) {
@@ -147,7 +116,7 @@ public class DeploymentDescriptorBuilder implements IGenerator {
 	}
 
 	private List<JAXBElement<?>> getListModules() {
-		return web.getModuleNameOrDescriptionAndDisplayName();
+		return model.getModuleNameOrDescriptionAndDisplayName();
 	}
 
 }

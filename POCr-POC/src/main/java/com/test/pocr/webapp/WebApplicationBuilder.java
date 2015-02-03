@@ -18,7 +18,7 @@ public class WebApplicationBuilder extends ApplicationBuilder {
 	}
 
 	public ApplicationModel getApplicationModel() {
-		addConfigurationFile(DD_PATH, ddBuilder);
+		addConfigurationFile(DD_PATH, ddBuilder.getGenerator());
 		return getModel();
 	}
 
