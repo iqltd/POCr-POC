@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.test.pocr.application.ApplicationGenerator;
 import com.test.pocr.dto.FieldDto;
 import com.test.pocr.dto.FormDto;
 import com.test.pocr.facelet.JsfApplicationBuilder;
@@ -21,9 +20,7 @@ public class POCrPOCMain {
 		form.setFields(getFieldList());
 		builder.addForm(form);
 
-		final ApplicationGenerator generator = new ApplicationGenerator(
-				builder.getApplicationModel());
-		generator.generateApplication();
+		builder.getGenerator().generateApplication();
 
 	}
 

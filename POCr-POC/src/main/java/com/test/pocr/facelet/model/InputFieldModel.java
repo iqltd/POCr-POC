@@ -9,6 +9,7 @@ public class InputFieldModel implements Serializable {
 	 */
 	private static final long serialVersionUID = -1890777759149001526L;
 
+	private String beanName;
 	private String label;
 	private boolean required;
 	private boolean disabled;
@@ -35,6 +36,14 @@ public class InputFieldModel implements Serializable {
 
 	public void setDisabled(final boolean disabled) {
 		this.disabled = disabled;
+	}
+
+	public String getBeanName() {
+		return beanName;
+	}
+
+	public void setBeanName(final String beanName) {
+		this.beanName = beanName;
 	}
 
 }

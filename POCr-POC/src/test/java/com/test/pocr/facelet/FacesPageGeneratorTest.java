@@ -11,7 +11,7 @@ public class FacesPageGeneratorTest {
 
 	@Test
 	public void nominalCase() {
-		final PageModel page = new PageModel();
+		final PageModel page = new PageModel("test");
 		final ButtonModel button1 = new ButtonModel();
 		button1.setLabel("test");
 		page.addButton(button1);

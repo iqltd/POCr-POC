@@ -11,9 +11,17 @@ public class PageModel implements Serializable {
 	 */
 	private static final long serialVersionUID = -7255084228885882934L;
 
-	List<InputFieldModel> components = new ArrayList<InputFieldModel>();
+	private final String name;
 
-	List<ButtonModel> menu = new ArrayList<ButtonModel>();
+	private final List<InputFieldModel> components;
+
+	private final List<ButtonModel> menu;
+
+	public PageModel(final String name) {
+		this.name = name;
+		components = new ArrayList<InputFieldModel>();
+		menu = new ArrayList<ButtonModel>();
+	}
 
 	public void addComponent(final InputFieldModel component) {
 		components.add(component);
@@ -29,6 +37,10 @@ public class PageModel implements Serializable {
 
 	public List<ButtonModel> getMenu() {
 		return menu;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

@@ -2,7 +2,9 @@ package com.test.pocr.mvn;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Build;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
 
 import com.test.pocr.application.IGenerator;
 
@@ -14,11 +16,8 @@ public class PomBuilder {
 
 	private final Model model;
 
-	public PomBuilder() {
+	public PomBuilder(final String artifactName) {
 		model = new Model();
-	}
-
-	public void buildPom(final String artifactName) {
 		model.setGroupId(GROUP_ID);
 		model.setArtifactId(StringUtils.isEmpty(artifactName) ? DEFAULT_ARTIFACT_NAME
 				: artifactName);
@@ -29,15 +28,23 @@ public class PomBuilder {
 		return new PomGenerator(model);
 	}
 
-	public Model getPom() {
+	public Model getPomModel() {
 		return model;
 	}
 
-	protected Build getBuild() {
+	public void setPackaging(final String packaging) {
+		model.setPackaging(packaging);
+	}
+
+	public void addDependency(final Dependency dependency) {
+		model.addDependency(dependency);
+	}
+
+	public void addBuildPlugin(final Plugin plugin) {
 		if (model.getBuild() == null) {
 			model.setBuild(new Build());
 		}
-		return model.getBuild();
+		model.getBuild().addPlugin(plugin);
 	}
 
 }

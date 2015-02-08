@@ -5,6 +5,19 @@ import java.io.IOException;
 
 public interface IGenerator {
 
-	void writeToFile(File f) throws IOException;
+	/**
+	 * Provides the relative file path where this artifact will be written
+	 *
+	 * @return
+	 */
+	String getRelativePath();
+
+	/**
+	 * Performs the file generation on the disk.
+	 *
+	 * @param folder
+	 * @throws IOException
+	 */
+	void writeInFolder(File folder) throws IOException;
 
 }

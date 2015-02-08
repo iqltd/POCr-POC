@@ -1,76 +1,44 @@
 package com.test.pocr.application;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-
-import com.test.pocr.mvn.PomBuilder;
+import java.util.List;
 
 public class ApplicationGenerator {
 
-	public static final String POM_XML = "/pom.xml";
-
 	public static final String PATH_PREFIX = "./target/";
 
-	public static final String PATH_SEPARATOR = "/";
-
 	private final ApplicationModel model;
-	private final String outputFolder;
+	private final File outputFolder;
 
 	public ApplicationGenerator(final ApplicationModel model) {
 		this.model = model;
-		outputFolder = model.getName();
+		outputFolder = new File(PATH_PREFIX + model.getName());
 	}
 
-	public boolean generateApplication() throws IOException {
-		createFolders();
-		writePom(getPom(model));
-		writeArtifacts(model.getBeans());
-		writeArtifacts(model.getConfigurationFiles());
-
-		return true;
+	/**
+	 * Generates the files of the application on the disk
+	 *
+	 * @throws IOException
+	 */
+	public void generateApplication() throws IOException {
+		recreateFolder();
+		writeArtifacts(model.getArtifacts());
 	}
 
-	private void createFolders() {
-		final File output = new File(PATH_PREFIX + outputFolder);
-		if (output.exists()) {
-			output.delete();
+	private void recreateFolder() {
+		if (outputFolder.exists()) {
+			outputFolder.delete();
 		}
-		output.mkdir();
+		outputFolder.mkdir();
 
 	}
 
-	private Model getPom(final ApplicationModel model) {
-		final PomBuilder pomBuilder = model.getPomBuilder();
-		pomBuilder.buildPom(model.getName());
-		return pomBuilder.getPom();
-	}
-
-	private void writePom(final Model pom) throws FileNotFoundException,
-	IOException {
-		final File pomXml = new File(PATH_PREFIX + outputFolder + POM_XML);
-		pomXml.createNewFile();
-		final Writer w = new PrintWriter(pomXml);
-		new MavenXpp3Writer().write(w, pom);
-	}
-
-	private void writeArtifacts(final Map<String, IGenerator> artifacts)
+	private void writeArtifacts(final List<IGenerator> artifacts)
 			throws IOException {
-		for (final Entry<String, IGenerator> entry : artifacts.entrySet()) {
-			String path = entry.getKey();
-			if (!path.startsWith(PATH_SEPARATOR)) {
-				path = PATH_SEPARATOR + path;
-			}
-			final IGenerator artifact = entry.getValue();
-			artifact.writeToFile(new File(PATH_PREFIX + outputFolder + path));
+
+		for (final IGenerator artifact : artifacts) {
+			artifact.writeInFolder(outputFolder);
 		}
 	}
-
 }

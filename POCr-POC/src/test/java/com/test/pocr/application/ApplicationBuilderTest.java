@@ -14,13 +14,12 @@ public class ApplicationBuilderTest {
 	public void testNominal() {
 		final ApplicationBuilder builder = new ApplicationBuilder("test");
 
-		final ApplicationModel model = builder.getModel();
+		final ApplicationModel model = builder.getApplicationModel();
 
 		Assert.assertTrue(model != null);
 
-		final Model pom = model.getPomBuilder().getPom();
+		final Model pom = builder.getPomBuilder().getPomModel();
 
 		Assert.assertTrue(pom != null);
 	}
-
 }

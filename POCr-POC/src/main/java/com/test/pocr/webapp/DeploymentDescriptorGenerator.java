@@ -1,6 +1,7 @@
 package com.test.pocr.webapp;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -22,7 +23,7 @@ public class DeploymentDescriptorGenerator implements IGenerator {
 		this.model = model;
 	}
 
-	public String getIntraProjectPath() {
+	public String getRelativePath() {
 		return INTRA_PROJECT_PATH;
 	}
 
@@ -30,9 +31,11 @@ public class DeploymentDescriptorGenerator implements IGenerator {
 	 * @throws PocrException
 	 *             on marshalling error
 	 */
-	public void writeToFile(final File projectPath) {
-		final File fullpath = new File(projectPath, getIntraProjectPath());
+	public void writeInFolder(final File folder) throws IOException {
+		final File fullpath = new File(folder, getRelativePath());
 		try {
+			fullpath.getParentFile().mkdirs();
+			fullpath.createNewFile();
 			getMarshaller().marshal(model, fullpath);
 		} catch (final JAXBException e) {
 			throw new PocrException(

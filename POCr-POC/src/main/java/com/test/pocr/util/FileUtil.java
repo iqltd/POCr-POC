@@ -20,6 +20,12 @@ public final class FileUtil {
 		throw new AssertionError();
 	}
 
+	public static Map<String, String> getConfigurationFromFile(
+			final String configurationFile) {
+		final Properties conf = loadPropertiesFromFile(configurationFile);
+		return convertToMap(conf);
+	}
+
 	public static Properties loadPropertiesFromFile(final String fileName) {
 		final Properties prop = new Properties();
 		InputStream input = null;

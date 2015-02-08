@@ -18,14 +18,15 @@ public class ManagedBeanGenerator implements IGenerator {
 		return model;
 	}
 
-	public String getIntraProjectPath() {
+	public String getRelativePath() {
 		return INTRA_PROJECT_PATH;
 	}
 
-	public void writeToFile(final File projectPath) throws IOException {
-		final File fullPath = new File(projectPath, getIntraProjectPath());
+	public void writeInFolder(final File folder) throws IOException {
+		final File fullPath = new File(folder, getRelativePath());
 		fullPath.mkdirs();
 		model.getCodeModel().build(fullPath);
+
 	}
 
 }
