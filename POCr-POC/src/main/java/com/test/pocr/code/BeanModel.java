@@ -62,7 +62,7 @@ public class BeanModel {
 		final String capitalizedName = WordUtils.capitalize(name);
 		final JMethod setter = bean.method(JMod.PUBLIC, void.class, SET_PREFIX
 				+ capitalizedName);
-		setter.param(String.class, name);
+		setter.param(type, name);
 		setter.body().assign(JExpr._this().ref(name), JExpr.ref(name));
 	}
 

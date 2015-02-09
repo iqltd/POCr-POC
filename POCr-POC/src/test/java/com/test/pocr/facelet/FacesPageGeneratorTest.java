@@ -19,11 +19,12 @@ public class FacesPageGeneratorTest {
 		final InputFieldModel field1 = new InputFieldModel();
 		field1.setLabel("field1");
 		field1.setRequired(false);
+		field1.setBeanName("bean");
 		page.addComponent(field1);
 
 		final FacesPageGenerator generator = new FacesPageGenerator(page);
 
-		final String expectedField = "<h:inputText required=\"false\" label=\"field1\"value=\"#{user.name}\" ></h:inputText>";
+		final String expectedField = "<h:inputText required=\"false\" label=\"field1\" value=\"#{bean.field1}\" ></h:inputText>";
 		final String expectedButton = "<h:commandButton value=\"test\" action=\"null\" ></h:commandButton>";
 
 		final String generatedPage = generator.generate();

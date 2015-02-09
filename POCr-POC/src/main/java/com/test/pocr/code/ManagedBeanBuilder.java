@@ -1,6 +1,6 @@
 package com.test.pocr.code;
 
-import javax.annotation.ManagedBean;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.sun.codemodel.JClassAlreadyExistsException;

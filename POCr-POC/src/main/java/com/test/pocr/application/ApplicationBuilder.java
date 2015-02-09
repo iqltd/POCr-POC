@@ -14,6 +14,7 @@ public class ApplicationBuilder {
 	private static final String GROUP_ID = "com.oracle.weblogic";
 	private static final String ARTIFACT_ID = "wls-maven-plugin";
 	private static final String VERSION = "12.1.3.0";
+	private static final String MODEL_VERSION = "4.0.0";
 
 	private static final String CONFIGURATION_FILE = "wls-maven-plugin.properties";
 
@@ -35,6 +36,7 @@ public class ApplicationBuilder {
 				GROUP_ID, ARTIFACT_ID, VERSION,
 				FileUtil.getConfigurationFromFile(CONFIGURATION_FILE));
 		pomBuilder.addBuildPlugin(wlsPlugin);
+		pomBuilder.getPomModel().setModelVersion(MODEL_VERSION);
 	}
 
 	/**
