@@ -1,5 +1,6 @@
 package com.test.pocr.webapp;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import org.jcp.xmlns.xml.ns.javaee.ServletNameType;
 import org.jcp.xmlns.xml.ns.javaee.ServletType;
 import org.jcp.xmlns.xml.ns.javaee.UrlPatternType;
 import org.jcp.xmlns.xml.ns.javaee.WebAppType;
+import org.jcp.xmlns.xml.ns.javaee.WelcomeFileListType;
 
 import com.test.pocr.application.IGenerator;
 import com.test.pocr.util.Util;
@@ -35,6 +37,19 @@ public class DeploymentDescriptorBuilder {
 
 	public IGenerator getGenerator() {
 		return new DeploymentDescriptorGenerator(model);
+	}
+
+	public void addWelcomePage(final String page) {
+		final WelcomeFileListType welcomeFiles = new WelcomeFileListType();
+		welcomeFiles.getWelcomeFile().add(page);
+		getListModules().add(
+				factory.createWebAppTypeWelcomeFileList(welcomeFiles));
+	}
+
+	public void addServlet(final String qualifiedClassName, final String pattern) {
+		final List<String> patterns = new ArrayList<String>();
+		patterns.add(pattern);
+		addServlet(qualifiedClassName, patterns);
 	}
 
 	public void addServlet(final String qualifiedClassName,

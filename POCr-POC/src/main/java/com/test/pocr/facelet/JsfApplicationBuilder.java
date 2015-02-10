@@ -1,9 +1,8 @@
 package com.test.pocr.facelet;
 
-import java.util.Arrays;
-
 import org.apache.maven.model.Dependency;
 
+import com.test.pocr.application.IGenerator;
 import com.test.pocr.code.ManagedBeanBuilder;
 import com.test.pocr.dto.FieldDto;
 import com.test.pocr.dto.FormDto;
@@ -16,16 +15,18 @@ public class JsfApplicationBuilder extends WebApplicationBuilder {
 
 	public static final String CLASSES_PATH = "/WEB-INF/classes";
 	public static final String FACES_SERVLET = "javax.faces.webapp.FacesServlet";
-	private static final String[] PATTERNS = { "*.xhtml" };
+	private static final String PATTERN = "*.xhtml";
 
 	public static final String GROUP_ID = "javax.faces";
 	public static final String ARTIFACT_ID = "jsf-api";
 	public static final String VERSION = "2.1";
 	public static final String SCOPE = "compile";
 
+	public String indexPage;
+
 	public JsfApplicationBuilder(final String name) {
 		super(name);
-		getDdBuilder().addServlet(FACES_SERVLET, Arrays.asList(PATTERNS));
+		getDdBuilder().addServlet(FACES_SERVLET, PATTERN);
 		final Dependency dependency = DependencyBuilder.getScopedDependency(
 				GROUP_ID, ARTIFACT_ID, VERSION, SCOPE);
 		getPomBuilder().addDependency(dependency);
@@ -52,7 +53,13 @@ public class JsfApplicationBuilder extends WebApplicationBuilder {
 		button.setLabel("Submit");
 		facesPageBuilder.addButton(button);
 
-		addArtifact(facesPageBuilder.getGenerator());
+		final IGenerator generator = facesPageBuilder.getGenerator();
+		addArtifact(generator);
+
+		if (indexPage == null) {
+			indexPage = PATTERN.replace("*", form.getFormName());
+		}
+
 	}
 
 	private void addManagedBean(final FormDto form) {
@@ -66,4 +73,9 @@ public class JsfApplicationBuilder extends WebApplicationBuilder {
 
 	}
 
+	@Override
+	protected void addSpecificArtifacts() {
+		super.addSpecificArtifacts();
+		getDdBuilder().addWelcomePage(indexPage);
+	}
 }

@@ -2,7 +2,7 @@ package com.test.pocr.application;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
@@ -22,7 +22,8 @@ public class ApplicationGenerator {
 	private final File outputFolder;
 
 	// TODO get it from the environment variables
-	public static final String M2_HOME = "/usr/local/maven";
+	// public static final String M2_HOME = "/usr/local/maven";
+	public static final String M2_HOME = System.getenv("M2_HOME");
 
 	public ApplicationGenerator(final ApplicationModel model) {
 		this.model = model;
@@ -58,8 +59,12 @@ public class ApplicationGenerator {
 
 	private void deployApplication() {
 		final InvocationRequest request = new DefaultInvocationRequest();
-		request.setGoals(Collections
-				.singletonList("com.oracle.weblogic:wls-maven-plugin:deploy"));
+		final List<String> goals = new ArrayList<String>();
+		goals.add("clean");
+		goals.add("install");
+		goals.add("com.oracle.weblogic:wls-maven-plugin:deploy");
+
+		request.setGoals(goals);
 		request.setBaseDirectory(outputFolder);
 
 		final Invoker invoker = new DefaultInvoker();

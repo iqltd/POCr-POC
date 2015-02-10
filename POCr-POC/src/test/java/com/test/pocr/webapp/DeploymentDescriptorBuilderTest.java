@@ -6,8 +6,6 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.test.pocr.webapp.DeploymentDescriptorBuilder;
-
 public class DeploymentDescriptorBuilderTest {
 
 	public DeploymentDescriptorBuilderTest() {
@@ -21,11 +19,6 @@ public class DeploymentDescriptorBuilderTest {
 	@BeforeClass
 	public static void init() {
 		ddBuilder = new DeploymentDescriptorBuilder(null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void addServletNullPatterns() {
-		ddBuilder.addServlet(VALID_SERVLET_CLASS, null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
