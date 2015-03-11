@@ -2,17 +2,7 @@ package com.test.pocr.application;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.maven.shared.invoker.DefaultInvocationRequest;
-import org.apache.maven.shared.invoker.DefaultInvoker;
-import org.apache.maven.shared.invoker.InvocationRequest;
-import org.apache.maven.shared.invoker.InvocationResult;
-import org.apache.maven.shared.invoker.Invoker;
-import org.apache.maven.shared.invoker.MavenInvocationException;
-
-import com.test.pocr.exception.PocrException;
 
 public class ApplicationGenerator {
 
@@ -20,10 +10,6 @@ public class ApplicationGenerator {
 
 	private final ApplicationModel model;
 	private final File outputFolder;
-
-	// TODO get it from the environment variables
-	// public static final String M2_HOME = "/usr/local/maven";
-	public static final String M2_HOME = System.getenv("M2_HOME");
 
 	public ApplicationGenerator(final ApplicationModel model) {
 		this.model = model;
@@ -35,10 +21,10 @@ public class ApplicationGenerator {
 	 *
 	 * @throws IOException
 	 */
-	public void generateApplication() throws IOException {
+	public File generateApplication() throws IOException {
 		recreateFolder();
 		writeArtifacts(model.getArtifacts());
-		deployApplication();
+		return outputFolder;
 	}
 
 	private void recreateFolder() {
@@ -57,27 +43,4 @@ public class ApplicationGenerator {
 		}
 	}
 
-	private void deployApplication() {
-		final InvocationRequest request = new DefaultInvocationRequest();
-		final List<String> goals = new ArrayList<String>();
-		goals.add("clean");
-		goals.add("install");
-		goals.add("com.oracle.weblogic:wls-maven-plugin:deploy");
-
-		request.setGoals(goals);
-		request.setBaseDirectory(outputFolder);
-
-		final Invoker invoker = new DefaultInvoker();
-		invoker.setMavenHome(new File(M2_HOME));
-
-		try {
-			final InvocationResult result = invoker.execute(request);
-			if (result.getExitCode() != 0) {
-				System.out.println("Naspa");
-			}
-		} catch (final MavenInvocationException e) {
-			throw new PocrException("Problem occured at deployment", e);
-		}
-
-	}
 }

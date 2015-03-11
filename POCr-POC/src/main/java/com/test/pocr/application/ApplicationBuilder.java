@@ -1,22 +1,14 @@
 package com.test.pocr.application;
 
-import org.apache.maven.model.Plugin;
-
-import com.test.pocr.mvn.PluginBuilder;
 import com.test.pocr.mvn.PomBuilder;
-import com.test.pocr.util.FileUtil;
+import com.test.pocr.weblogic.WlsMavenPluginHelper;
 
 public class ApplicationBuilder {
 
 	private final String NAME_SPACE = "com.pocr.generated";
 	private final ApplicationModel model;
 
-	private static final String GROUP_ID = "com.oracle.weblogic";
-	private static final String ARTIFACT_ID = "wls-maven-plugin";
-	private static final String VERSION = "12.1.3.0";
 	private static final String MODEL_VERSION = "4.0.0";
-
-	private static final String CONFIGURATION_FILE = "wls-maven-plugin.properties";
 
 	private final PomBuilder pomBuilder;
 
@@ -32,10 +24,7 @@ public class ApplicationBuilder {
 		model = new ApplicationModel(name);
 		pomBuilder = new PomBuilder(name);
 
-		final Plugin wlsPlugin = PluginBuilder.getPluginWithConfiguration(
-				GROUP_ID, ARTIFACT_ID, VERSION,
-				FileUtil.getConfigurationFromFile(CONFIGURATION_FILE));
-		pomBuilder.addBuildPlugin(wlsPlugin);
+		pomBuilder.addBuildPlugin(WlsMavenPluginHelper.getWlsPlugin());
 		pomBuilder.getPomModel().setModelVersion(MODEL_VERSION);
 	}
 

@@ -6,8 +6,6 @@ import com.test.pocr.application.IGenerator;
 import com.test.pocr.code.ManagedBeanBuilder;
 import com.test.pocr.dto.FieldDto;
 import com.test.pocr.dto.FormDto;
-import com.test.pocr.facelet.model.ButtonModel;
-import com.test.pocr.facelet.model.InputFieldModel;
 import com.test.pocr.mvn.DependencyBuilder;
 import com.test.pocr.webapp.WebApplicationBuilder;
 
@@ -38,20 +36,12 @@ public class JsfApplicationBuilder extends WebApplicationBuilder {
 	}
 
 	private void addPage(final FormDto form) {
-		final FacesPageBuilder facesPageBuilder = new FacesPageBuilder(
-				form.getFormName());
+		final PageBuilder facesPageBuilder = new PageBuilder(form.getFormName());
 
 		for (final FieldDto field : form.getFields()) {
-			final InputFieldModel component = new InputFieldModel();
-			component.setLabel(field.getName());
-			component.setRequired(field.isRequired());
-			component.setBeanName(form.getFormName().toLowerCase());
-			facesPageBuilder.addComponent(component);
+			final String beanName = form.getFormName().toLowerCase();
+			facesPageBuilder.addComponent(beanName, field);
 		}
-
-		final ButtonModel button = new ButtonModel();
-		button.setLabel("Submit");
-		facesPageBuilder.addButton(button);
 
 		final IGenerator generator = facesPageBuilder.getGenerator();
 		addArtifact(generator);

@@ -1,9 +1,11 @@
 package com.test.pocr;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.test.pocr.application.ApplicationDeployer;
 import com.test.pocr.dto.FieldDto;
 import com.test.pocr.dto.FormDto;
 import com.test.pocr.facelet.JsfApplicationBuilder;
@@ -20,7 +22,8 @@ public class POCrPOCMain {
 		form.setFields(getFieldList());
 		builder.addForm(form);
 
-		builder.getGenerator().generateApplication();
+		final File outputFolder = builder.getGenerator().generateApplication();
+		ApplicationDeployer.deployApplication(outputFolder);
 
 	}
 
