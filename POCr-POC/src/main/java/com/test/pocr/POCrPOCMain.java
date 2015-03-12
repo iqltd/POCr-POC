@@ -17,7 +17,8 @@ public class POCrPOCMain {
 
 	public static void main(final String[] args) throws IOException {
 
-		final JsfApplicationBuilder builder = new JsfApplicationBuilder("test");
+		final JsfApplicationBuilder builder = new JsfApplicationBuilder(
+				"Generated");
 		final FormDto form = new FormDto("testForm");
 		form.setFields(getFieldList());
 		builder.addForm(form);

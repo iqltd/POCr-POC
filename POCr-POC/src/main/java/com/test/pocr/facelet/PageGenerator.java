@@ -35,7 +35,6 @@ public class PageGenerator implements IGenerator {
 		// we want to format the xml. This is used only for demonstration.
 		// pretty formatting adds extra spaces and is generally not required.
 		xml.setFormat(Format.getPrettyFormat());
-		folder.mkdirs();
 		final File page = new File(folder, getRelativePath());
 		final OutputStream out = new FileOutputStream(page);
 		xml.output(model, out);

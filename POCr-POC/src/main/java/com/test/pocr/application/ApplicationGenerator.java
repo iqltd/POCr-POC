@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.codehaus.plexus.util.FileUtils;
+
 public class ApplicationGenerator {
 
 	public static final String PATH_PREFIX = "./target/";
+	public static final String FOLDER_TREE = "./folderTree/";
 
 	private final ApplicationModel model;
 	private final File outputFolder;
@@ -22,17 +25,17 @@ public class ApplicationGenerator {
 	 * @throws IOException
 	 */
 	public File generateApplication() throws IOException {
-		recreateFolder();
+		copyFolderTree();
 		writeArtifacts(model.getArtifacts());
 		return outputFolder;
 	}
 
-	private void recreateFolder() {
-		if (outputFolder.exists()) {
-			outputFolder.delete();
-		}
+	private void copyFolderTree() throws IOException {
 		outputFolder.mkdir();
-
+		FileUtils.cleanDirectory(outputFolder);
+		final File folderTree = new File(getClass().getClassLoader()
+				.getResource(FOLDER_TREE).getFile());
+		FileUtils.copyDirectoryStructure(folderTree, outputFolder);
 	}
 
 	private void writeArtifacts(final List<IGenerator> artifacts)
